@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=620">
+<link href="css/bootstrap.min.css" rel = "stylesheet" media="screen">
+<title>Verifying image (chakak)</title>
+</head>
+<body>
+
+<style>
+#holder {border: 10px black solid; width: 350px; min-height: 300px; margin: 20px auto;}
+#holder.hover { border: 10px dashed #0c0; }
+#holder img { display: block; margin: 10px auto; }
+
+
+#container { text-align:center; width: 350px; margin: 0px auto;}
+progress { width: 350px; margin: 0px auto; }
+
+#filebysearch{margin-left:24px;width:300px;}
+#idbox{text-align:center;width:350px; margin: 0px auto;}
+h1{
+  font-size:40px;
+  text-align:center;
+  border-bottom: 5px black solid;
+  margin: 0;
+  padding:20px;
+}
+#grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+}
+#result{
+  border-left: 5px black solid;
+  font-size: 30px;
+  margin-left = 10px;
+}
+</style>
+<h1>Title</h1>
+<div id="grid">
+  <div>
+<div id="holder">
+  <input name="filebysearch" id="filebysearch" type="file">
+</div>
+
+<div id="container">
+  drag&drop the image file in the box. (only one)
+    <progress id="uploadprogress" min="0" max="100" value="0"/>
+</div>
+<div id="idbox">Insert KakaoID :<input id="idkakao" type="text">
+<button onclick = "resultview()">Verifying</button>
+</div>
+</div>
+<div id="result">
+  <span>Result :</span>
+  <p class="boolresult"></p>
+  <p class="metaresult"></p>
+</div>
+</div>
+<p id="plain">
+  <br>Author : JiyongSong</br>
+  <br>Date/Time : 2018-05-28/12:00PM</br>
+  <br>Locate : Korea, Daejeon</br>
+</p>
+<br><p class = "pubkey">public key</p></br>
+<br><p class = "cipher">cipher text(encryption)</p></br>
+<br><p class = "plainresult">plain text (decryption)</p></br>
+<br><p class = "hashresult">sha512 hash example</p></br>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js">
+</script>
+<script src = "js/bootstrap.min.js"></script>
+<script src = "js/cryptico-master/cryptico.min.js"></script>
+<script src = "js/sha512/sha512.min.js"></script>
+<script type="text/javascript">
+    var holder = document.getElementById('holder');
+    var progress = document.getElementById('uploadprogress');
+    holder.ondragover = function () { this.className = 'hover'; return false; };
+    holder.ondragend = function () { this.className = ''; return false; };
+    holder.ondrop = function (e) {
+        this.className = '';
+        e.preventDefault();
+        readfiles(e.dataTransfer.files);
+    }
+
+
+    function readfiles(files) {
+        // 파일 미리보기
+        previewfile(files[0]);
+
+        var formData = new FormData();
+        formData.append('upload', files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', './devnull.php');
+        xhr.onload = function() {
+            progress.value = 100;
+        };
+
+        xhr.upload.onprogress = function (event) {
+            if (event.lengthComputable) {
+                var complete = (event.loaded / event.total * 100 | 0);
+                progress.value = progress.innerHTML = complete;
+            }
+        }
+
+        xhr.send(formData);
+    }
+    var reader = new FileReader();
+    function previewfile(file) {
+        //var reader = new FileReader();
+        reader.onload = function (event) {
+            var image = new Image();
+            image.src = event.target.result;
+            image.width = 250; // a fake resize
+            holder.appendChild(image);
+        };
+
+        reader.readAsDataURL(file);
+    }
+    function filepreview(evt){
+      var files = evt.target.files;
+      evt.preventDefault();
+      readfiles(files);
+    }
+
+    function resultview(){
+      $(function(){$('.boolresult').text('True');});
+      var kid = document.getElementById("idkakao").value;
+      $(function(){$('.metaresult').text(kid);});
+      var ptext = document.getElementById('plain');
+      var RSAkey = cryptico.generateRSAKey("pass phrase is necessary",1024);
+      var pkey = cryptico.publicKeyString(RSAkey);
+      $(function(){$('.pubkey').text(pkey);});
+      var enc = cryptico.encrypt(ptext.outerHTML,pkey);
+      $(function(){$('.cipher').text(enc.cipher);});
+      var dec = cryptico.decrypt(enc.cipher, RSAkey);
+      $(function(){$('.plainresult').text(dec.plaintext);});
+      var hash = sha512.create();
+      hash.update('hash example');
+      $(function(){$('.hashresult').text(hash.hex());});
+    }
+    document.getElementById('filebysearch').addEventListener('change',filepreview,false);
+</script>
+</body>
+</html>
