@@ -55,7 +55,7 @@ h1{
     <progress id="uploadprogress" min="0" max="100" value="0"/>
 </div>
 <div id="idbox">Insert KakaoID :<input id="idkakao" type="text">
-<button onclick = "resultview()">Verifying</button>
+<button onclick = "onClick">Verifying</button>
 </div>
 </div>
 </div>
@@ -98,7 +98,7 @@ h1{
         e.preventDefault();
         previewfile(e.dataTransfer.files[0]);
     }
-
+    var name = "";
     var reader = new FileReader();
     function previewfile(file) {
         //var reader = new FileReader();
@@ -108,13 +108,24 @@ h1{
             image.width = 250; // a fake resize
             holder.appendChild(image);
         };
-
+        name = file.name;
+        console.log(name);
         reader.readAsDataURL(file);
     }
     function filepreview(evt){
       var files = evt.target.files;
       evt.preventDefault();
       previewfile(files[0]);
+    }
+
+    function onClick() {
+      if (name == "") {
+        return;
+      }
+      else {
+        var kid = document.getElementById("idkakao").value;
+        resultview(fileChecker(name), kid);
+      }
     }
 
     function resultview(){
