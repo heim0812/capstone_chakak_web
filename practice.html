@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
 <meta charset=utf-8>
 <meta name="viewport" content="width=620">
@@ -52,10 +51,10 @@ h1{
 
 <div id="container">
   drag&drop the image file in the box. (only one)
-    <progress id="uploadprogress" min="0" max="100" value="0"/>
+    <progress id="uploadprogress" min="0" max="100" value="0"/></progress>
 </div>
 <div id="idbox">Insert KakaoID :<input id="idkakao" type="text">
-<button onclick = "onClick">Verifying</button>
+<button onclick = "onClick()">Verifying</button>
 </div>
 </div>
 </div>
@@ -64,8 +63,7 @@ h1{
 <div class = "panel-heading">Result</div>
 <div class = "panel-body">
 <div id="result">
-  <p class="boolresult">bool</p>
-  <p class="metaresult">kakaoid</p>
+  <p class="boolresult"></p>
 </div>
 </div>
 </div>
@@ -73,14 +71,13 @@ h1{
 <div class = "panel-heading">Data</div>
 <div class = "panel-body">
 <p id="plain">
-  <br>Author : JiyongSong</br>
-  <br>Date/Time : 2018-05-28/12:00PM</br>
-  <br>Locate : Korea, Daejeon</br>
+  <br>Author : <p class="Author"></p></br>
+  <br>Date/Time : <p class="Time"></p></br>
+  <br>Locate : <p class="Locate"></p></br>
 </p>
-<br><p class = "pubkey">public key</p></br>
-<br><p class = "cipher">cipher text(encryption)</p></br>
-<br><p class = "plainresult">plain text (decryption)</p></br>
-<br><p class = "hashresult">sha512 hash example</p></br>
+<br>Public Key : <p class = "pubkey"></p></br>
+<br>Cipher text (Encryption) : <p class = "cipher"></p></br>
+<br>Plain text (decryption) : <p class = "plainresult"></p></br>
 </div>
 </div>
 </div>
@@ -88,6 +85,8 @@ h1{
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src = "js/cryptico-master/cryptico.min.js"></script>
 <script src = "js/sha512/sha512.min.js"></script>
+<script src = "fileCheck.js"></script>
+<script src = "resultView.js"></script>
 <script>
     var holder = document.getElementById('holder');
     var progress = document.getElementById('uploadprogress');
@@ -124,14 +123,12 @@ h1{
       }
       else {
         var kid = document.getElementById("idkakao").value;
-        resultview(fileChecker(name), kid);
+        resultView(fileChecker(name), kid);
       }
     }
 
-    function resultview(){
+    /***function resultview(){
       $(function(){$('.boolresult').text('True');});
-      var kid = document.getElementById("idkakao").value;
-      $(function(){$('.metaresult').text(kid);});
       var ptext = document.getElementById('plain');
       var RSAkey = cryptico.generateRSAKey("pass phrase is necessary",1024);
       var pkey = cryptico.publicKeyString(RSAkey);
@@ -143,7 +140,8 @@ h1{
       var hash = sha512.create();
       hash.update('hash example');
       $(function(){$('.hashresult').text(hash.hex());});
-    }
+    }***/
+
     document.getElementById('filebysearch').addEventListener('change',filepreview,false);
 </script>
 </body>
