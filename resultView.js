@@ -1,12 +1,12 @@
 function resultView(casenumber, kid){
   var RSAkey;
   if (casenumber == 0 || kid !='heim0812'){
-    $(function(){$('.boolresult').text('False');});
+    $(function(){$('#boolimg').attr('src', 'NO.png');});
   }
   else if (casenumber == 1){
     console.log('case1');
     RSAkey = cryptico.generateRSAKey(kid,1024);
-    $(function(){$('.boolresult').text('True');});
+    $(function(){$('#boolimg').attr('src','OK.png');});
     $(function(){$('.Author').text('김대환 (heim0812)');});
     var d = new Date();
     var realtime = d.getFullYear() +'년'+ (d.getMonth()+1) +'월' +d.getDate() +'일'+d.getHours()+'시'+d.getMinutes()+'분';
@@ -23,7 +23,7 @@ function resultView(casenumber, kid){
   else if (casenumber == 2){
     console.log('case2');
     RSAkey = cryptico.generateRSAKey(kid,1024);
-    $(function(){$('.boolresult').text('True');});
+    $(function(){$('#boolimg').attr('src', 'OK.png');});
     $(function(){$('.Author').text('김대환 (heim0812)');});
     var yesterday = '2018년6월7일19시45분'
     $(function(){$('.Time').text(yesterday);});

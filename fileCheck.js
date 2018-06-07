@@ -1,10 +1,10 @@
 function fileChecker(name) {
 	var temp_pre = "";
 	var temp_post = "";
-	for (int i = 0; i < 4; i++) {
+	for (var i = 0; i < 4; i++) {
 		temp_pre = temp_pre + name[i];
 	}
-	for (int j = 0; j < 3; j++) {
+	for (var j = 0; j < 3; j++) {
 		temp_post = name[name.length - 1 - j] + temp_post;
 	}
 	if (temp_pre == "2018") {

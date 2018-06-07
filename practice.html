@@ -40,7 +40,7 @@ h1{
   margin-right: 20px;
 }
 </style>
-<h1>Title</h1>
+<img src="LOGO.png">
 <div id="grid">
 <div class = "panel panel-primary">
 <div class = "panel-heading">Input</div>
@@ -63,7 +63,7 @@ h1{
 <div class = "panel-heading">Result</div>
 <div class = "panel-body">
 <div id="result">
-  <p class="boolresult"></p>
+  <p class="boolresult"><img id="boolimg" src=""/></p>
 </div>
 </div>
 </div>
@@ -116,14 +116,21 @@ h1{
       evt.preventDefault();
       previewfile(files[0]);
     }
-
+    var clickCheck = 0;
     function onClick() {
+      if (clickCheck == 0) {
+        clickCheck = 1;
+      }
+      else {
+        return;
+      }
       if (name == "") {
         return;
       }
       else {
         var kid = document.getElementById("idkakao").value;
-        resultView(fileChecker(name), kid);
+        var mark = fileChecker(name);
+        resultView(mark, kid);
       }
     }
 
