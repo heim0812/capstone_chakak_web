@@ -13,7 +13,7 @@ function fileChecker(name) {
 	else if (temp_post == "png") {
 		return 0;
 	}
-	else if (temp_pre == "2017") {
+	else if (temp_pre == "1515") {
 		return 2;
 	}
 	else if (temp_post == "jpg") {
